@@ -1,12 +1,12 @@
 # ContextEng
 
-Context engineering templates and configurations for optimizing AI-powered code writing tools.
+Templates and configurations for context engineering with AI code assistants.
 
 ## Purpose
 
-This repository provides templates and configuration files designed to optimize the experience of context engineering with code writing tools such as **Claude Code** and **Kiro**. These templates help establish clear guidelines, project structure conventions, and best practices for AI assistants working on your codebase.
+This repository provides templates for managing context in AI code writing tools such as Claude Code and Kiro. These templates establish project guidelines, structure conventions, and development practices for AI assistants.
 
-The most precious resource in any context engineering project is memory. In order to optimize memory usage that speeds code delivery the use of the /clear command is essential. At any moment in your development process, you must be able to type/clear followed by the instruction to read the four following files: README.md, CLAUDE.md, TASKS.md, and .env. By well, maintaining these poor files, it is possible to create superb overall architectures, develop development, guidelines, and themes, and importantly to zero in on specific debugging and narrow product feature requests.
+Context window management is critical in AI-assisted development. Regular use of the `/clear` command helps maintain optimal performance. A working pattern: use `/clear`, then read core project files (README.md, CLAUDE.md, TASKS.md, .env). Maintaining these files enables consistent architecture, clear development guidelines, and focused debugging.
 
 ## What's Included
 
@@ -25,104 +25,104 @@ The most precious resource in any context engineering project is memory. In orde
 
 ## Benefits
 
-- Consistent AI assistant behavior across team members
-- Reduced need for repetitive instructions
-- Better code quality through enforced standards
-- Faster onboarding for AI tools in complex projects
-- Clear architectural and development guidelines
+- Consistent AI behavior across team members
+- Reduced repetitive instructions
+- Enforced development standards
+- Defined architectural patterns
+- Structured debugging workflows
 
-## Memory Management Best Practices
+## Memory Management
 
 ### Core Principles
 
-Memory (context window) is the most precious resource in context engineering. Effective memory management can improve AI coding performance by up to 39% according to [Anthropic's research on context management](https://www.anthropic.com/news/context-management).
+Context window size directly impacts AI assistant performance. Effective context management can improve performance by 39% ([Anthropic research](https://www.anthropic.com/news/context-management)).
 
-### Essential Commands for Memory Optimization
+### Essential Commands
 
-**`/clear`** - Use frequently between tasks to reset the context window. This should become muscle memory executed every few minutes during development sessions.
+**`/clear`** - Reset context window between tasks. Use regularly to maintain performance.
 
-**`/context`** - Inspect token usage and optimize MCP tools and custom agents for peak performance.
+**`/context`** - Inspect token usage and optimize MCP tools.
 
-**`/compact`** - Summarizes the current coding session to make it more concise (note: can take a minute or more to execute).
+**`/compact`** - Compress current session to reduce token count (processing time: 1+ minutes).
 
-**`/resume`** - Jump between previous chats for strategic context switching.
+**`/resume`** - Switch between previous sessions.
 
-### File-Based Memory System
+### File Organization
 
-**Project Memory Files** (CLAUDE.md):
-- Should contain project-specific guidelines needed in every coding session
-- Keep lean as they consume context window space at the start of each session
-- Follow the cascaded system approach recommended in [Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+**Project Memory** (CLAUDE.md):
+- Project-specific guidelines loaded at session start
+- Keep minimal to reduce token consumption
+- Follow cascaded system approach ([Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices))
 
-**Ad-Hoc Documentation** (docs/ folder):
-- Place information only needed occasionally in separate documentation files
-- Reference using `@docs/filename.md` to save tokens by not loading unnecessary content
-- Implement "just in time" context loading for complex data analysis
+**Ad-Hoc Documentation** (docs/):
+- Store occasional-use information separately
+- Reference via `@docs/filename.md` to avoid loading unnecessary content
+- Load context on-demand for complex analysis
 
-### Context Engineering Strategies
+### Context Engineering Patterns
 
-**Four Pillars of Context Engineering**:
-1. **Writing Context** - Create persistent information stores
-2. **Selecting Context** - Pull relevant information at the right time
-3. **Compressing Context** - Manage token bloat effectively
-4. **Isolating Context** - Structure information for effective task performance
+**Core Strategies**:
+1. **Writing** - Create persistent information stores
+2. **Selecting** - Load relevant information when needed
+3. **Compressing** - Minimize token usage
+4. **Isolating** - Structure information by concern
 
-**Best Practices**:
-- Chop tasks into smaller chunks and use `/clear` after each completion
-- Use subagents to verify details or investigate questions early in conversations
-- Maintain examples folder with patterns for the AI to follow
-- Document context at the end of each working session
-- Select only the most relevant code snippets for the AI model
-- Preserve project structure and hierarchy when importing code
+**Implementation**:
+- Break tasks into discrete units; use `/clear` between completions
+- Delegate verification and investigation to subagents
+- Maintain examples folder for pattern reference
+- Document session context before closing
+- Import only relevant code sections
+- Preserve project hierarchy in references
 
-### Advanced Features (2025)
+### Advanced Features
 
-**Context Editing**: Automatically clears stale tool calls and results when approaching token limits, reducing token consumption by up to 84% in long-running tasks. [Learn more](https://www.anthropic.com/news/context-management)
+**Context Editing** - Automatically removes stale tool calls when approaching token limits. Reduces token consumption by 84% in extended sessions. [Details](https://www.anthropic.com/news/context-management)
 
-**Memory Tool**: Enables Claude to store and consult information outside the context window through a file-based system, allowing agents to build knowledge bases over time and maintain project state across sessions.
+**Memory Tool** - File-based storage for information outside the context window. Maintains knowledge bases and project state across sessions.
 
-**Context Awareness**: Claude Sonnet 4.5 and Haiku 4.5 can track their remaining context window ("token budget") throughout conversations, enabling more effective context management.
+**Context Awareness** - Claude Sonnet 4.5 and Haiku 4.5 track remaining context window throughout conversations.
 
-## Cloud Development & AWS Integration
+## AWS Integration
 
-### AWS AI Coding Tools
+### Tools
 
-**[Amazon Q Developer](https://aws.amazon.com/q/developer/)** - AWS's primary AI coding assistant with industry-leading code acceptance rates (37-60% in production environments). Supports Python, Java, JavaScript, TypeScript, C#, Go, Rust, PHP, Ruby, Kotlin, C, C++, shell scripting, SQL, Scala, JSON, YAML, and HCL.
+**[Amazon Q Developer](https://aws.amazon.com/q/developer/)** - AI coding assistant for AWS. Code acceptance rates: 37-60%. Language support: Python, Java, JavaScript, TypeScript, C#, Go, Rust, PHP, Ruby, Kotlin, C, C++, shell scripting, SQL, Scala, JSON, YAML, HCL.
 
-**[AWS MCP Servers](https://aws.amazon.com/blogs/machine-learning/introducing-aws-mcp-servers-for-code-assistants-part-1/)** - Suite of specialized Model Context Protocol servers that bring AWS best practices directly to your development workflow.
+**[AWS MCP Servers](https://aws.amazon.com/blogs/machine-learning/introducing-aws-mcp-servers-for-code-assistants-part-1/)** - Model Context Protocol servers for AWS development workflows.
 
-### AWS Best Practices for AI-Assisted Development
+### Implementation Patterns
 
-- **Infrastructure as Code (IaC)**: Use AI assistants to automate IaC translation, reducing manual effort and minimizing errors. [AWS IaC Translation Guide](https://aws.amazon.com/blogs/compute/infrastructure-as-code-translation-for-serverless-using-ai-code-assistants/)
-- **Security First**: Scan code for vulnerabilities, exposed credentials, and log injection with AI-powered security analysis
-- **CI/CD Integration**: Auto-generate tests, prevent builds from breaking downstream contracts, and surface failures before production
-- **Compliance**: Follow [FedRAMP and DoD CC SRG standards](https://aws.amazon.com/blogs/publicsector/building-an-ai-coding-assistant-on-aws-a-guide-for-federal-agencies/) for federal and highly regulated environments
+- **IaC Translation**: Automated translation between infrastructure frameworks. [Guide](https://aws.amazon.com/blogs/compute/infrastructure-as-code-translation-for-serverless-using-ai-code-assistants/)
+- **Security Scanning**: Vulnerability detection, credential exposure, log injection analysis
+- **CI/CD**: Test generation, contract validation, pre-production failure detection
+- **Compliance**: [FedRAMP and DoD CC SRG](https://aws.amazon.com/blogs/publicsector/building-an-ai-coding-assistant-on-aws-a-guide-for-federal-agencies/) implementation guidance
 
-## Key Resources & Influencers
+## Resources
 
-### Official Documentation
+### Documentation
 
-- [Anthropic Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
+- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
 - [Context Windows Guide](https://docs.claude.com/en/docs/build-with-claude/context-windows)
-- [Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [AWS Amazon Q Developer](https://aws.amazon.com/q/developer/)
 
-### Community Leaders & Resources
+### Community
 
-**[Cole Medin](https://github.com/coleam00)** - Context engineering advocate and AI educator
-- Creator of ["Context Engineering 101: The Simple Strategy to 100× AI Coding"](https://github.com/coleam00/context-engineering-intro)
-- Founder of Dynamous AI community with Context Engineering Hub
-- Focuses on Product Requirements Prompts (PRPs) and practical implementation strategies
+**[Cole Medin](https://github.com/coleam00)** - Context engineering resources and implementation patterns
+- [Context Engineering Introduction](https://github.com/coleam00/context-engineering-intro)
+- Dynamous AI community - Context Engineering Hub
+- Product Requirements Prompts (PRPs) methodology
 - [LinkedIn](https://www.linkedin.com/in/cole-medin-727752184/) | [GitHub](https://github.com/coleam00)
 
-### Additional Learning Resources
+### Additional Reading
 
-- [Practical Context Engineering for Vibe Coding](https://abvijaykumar.medium.com/practical-context-engineering-for-vibe-coding-with-claude-code-6aac4ee77f81)
-- [Claude Code Memory Management Tips](https://www.geeky-gadgets.com/claude-code-memory-management-tips/)
-- [Context Engineering: A Guide With Examples](https://www.datacamp.com/blog/context-engineering) (DataCamp)
-- [16x Prompt - AI Coding Context Management](https://prompt.16x.engineer/blog/ai-coding-context-management)
-- [Google Cloud: Five Best Practices for AI Coding Assistants](https://cloud.google.com/blog/topics/developers-practitioners/five-best-practices-for-using-ai-coding-assistants)
+- [Practical Context Engineering](https://abvijaykumar.medium.com/practical-context-engineering-for-vibe-coding-with-claude-code-6aac4ee77f81)
+- [Memory Management Tips](https://www.geeky-gadgets.com/claude-code-memory-management-tips/)
+- [Context Engineering Guide](https://www.datacamp.com/blog/context-engineering) (DataCamp)
+- [AI Coding Context Management](https://prompt.16x.engineer/blog/ai-coding-context-management)
+- [Google Cloud AI Assistant Best Practices](https://cloud.google.com/blog/topics/developers-practitioners/five-best-practices-for-using-ai-coding-assistants)
 
 ## Contributing
 
-Feel free to submit issues or pull requests to improve these templates.
+Submit issues or pull requests to improve these templates.
