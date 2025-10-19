@@ -107,7 +107,13 @@ Context window size directly impacts AI assistant performance. Effective context
 - [Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [AWS Amazon Q Developer](https://aws.amazon.com/q/developer/)
 
-### Community
+### Thought Leaders
+
+**[IndyDevDan](https://www.youtube.com/@indydevdan)** - Agentic engineering and principled AI coding
+- [Principled AI Coding (PAIC)](https://agenticengineer.com/principled-ai-coding) - Comprehensive course on AI coding fundamentals
+- [Tactical Agentic Coding (TAC)](https://agenticengineer.com/tactical-agentic-coding) - Advanced course on agent orchestration and production deployment
+- Focuses on building living software with Claude Code, spec-based coding, and agentic workflows
+- [YouTube](https://www.youtube.com/@indydevdan) | [Website](https://indydevdan.com/) | [X/Twitter](https://x.com/indydevdan)
 
 **[Cole Medin](https://github.com/coleam00)** - Context engineering resources and implementation patterns
 - [Context Engineering Introduction](https://github.com/coleam00/context-engineering-intro)
