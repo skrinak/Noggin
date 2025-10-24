@@ -32,6 +32,13 @@ Replace uppercase names with your specifics, i.e. YOUR_APP, DATA_SOURCE_1, etc
 
 ## 🛠️ DEVELOPMENT STANDARDS
 
+### Task Tracking & Progress Management
+- **File**: All tasks tracked in `tasks.md` (NEVER create tasks.txt or other variants)
+- **Status Updates**: Mark tasks as completed immediately upon finishing
+- **In-Progress Marking**: Mark tasks as in-progress when actively working on them
+- **Resilience**: Ensures continuity if Claude Code is interrupted, crashes, or rate limited
+- **Recovery**: tasks.md is the single source of truth for project state and progress
+
 ### Before Writing Code
 1. **SEARCH FIRST**: Use Grep/Glob to find existing implementations
 2. **READ CONTEXT**: Check neighboring files for patterns and conventions
@@ -151,17 +158,18 @@ PUT  /refresh/{symbol}          # Refresh prices
 
 ## ✅ ALWAYS DO THIS
 
-1. **Search before creating** new code
-2. **Read files directly** without asking permission
-3. **Fix root causes** not symptoms
-4. **Test your changes** with existing test suites
-5. **Include disclaimers** for sensitive content
-6. **Follow existing patterns** in the codebase
-7. **Run lint/typecheck** before marking complete
-8. **Use CloudFormation/CDK** for all infrastructure changes (backend/infrastructure/templates/)
-9. **Ensure infrastructure is rebuildable** - templates must be complete and error-free
-10. **Analyze dependencies before removing code** - Check for helper functions, imports, type definitions
-11. **Verify API response structure** - Use console.log or debugger to check actual vs expected property names
-12. **Test after any code removal** - Even small deletions can cause cascading failures
-13. **BEFORE CLAIMING SUCCESS: Verify actual data exists in database/system** - Never trust API success messages, always check the actual end result
+1. **Track progress in tasks.md** - Update task status (in-progress/completed) as you work
+2. **Search before creating** new code
+3. **Read files directly** without asking permission
+4. **Fix root causes** not symptoms
+5. **Test your changes** with existing test suites
+6. **Include disclaimers** for sensitive content
+7. **Follow existing patterns** in the codebase
+8. **Run lint/typecheck** before marking complete
+9. **Use CloudFormation/CDK** for all infrastructure changes (backend/infrastructure/templates/)
+10. **Ensure infrastructure is rebuildable** - templates must be complete and error-free
+11. **Analyze dependencies before removing code** - Check for helper functions, imports, type definitions
+12. **Verify API response structure** - Use console.log or debugger to check actual vs expected property names
+13. **Test after any code removal** - Even small deletions can cause cascading failures
+14. **BEFORE CLAIMING SUCCESS: Verify actual data exists in database/system** - Never trust API success messages, always check the actual end result
 
