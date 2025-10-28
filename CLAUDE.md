@@ -44,6 +44,7 @@ Replace uppercase names with your specifics, i.e. YOUR_APP, DATA_SOURCE_1, etc
 2. **READ CONTEXT**: Check neighboring files for patterns and conventions
 3. **NO MOCK DATA**: Use real APIs (DATA_SOURCE_1)
 4. **USE EXISTING**: Prefer editing files over creating new ones
+5. **UTILITY CODE**: Place all utility scripts and development tools in the Utils/ directory
 
 ### When Writing Code
 REQUIRED: TypeScript with strict typing
@@ -77,6 +78,7 @@ YOUR_APP/
 ├── backend/              # AWS Lambda functions
 │   ├── infrastructure/   # CDK/CloudFormation
 │   └── lambda/           # Business logic
+├── Utils/                # Utility scripts, tools, and development code
 └── docs/                 # Architecture, Diagrams, Developer and User Guide documentation
 ```
 

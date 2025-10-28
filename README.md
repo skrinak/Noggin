@@ -1,134 +1,197 @@
-# ContextEng
+# Noggin: A Multi-Platform mTBI Management Solution
 
-Templates and configurations for context engineering with AI code assistants.
+## Executive Summary
+Noggin is a comprehensive digital health intervention designed for patients suffering from mild Traumatic Brain Injury (mTBI). This solution bridges the critical gap in healthcare by providing continuous monitoring, triage, and personalized care recommendations through a multi-platform architecture leveraging AWS cloud services and agentic AI.
 
-## Purpose
+## Problem Statement
+Over one million people suffer an mTBI in the UK annually, yet most receive minimal follow-up care. This results in:
+- Patients feeling neglected during recovery
+- Delayed interventions that could prevent long-term complications
+- Inefficient use of specialist resources
 
-This repository provides templates for managing context in AI code writing tools such as Claude Code and Kiro. These templates establish project guidelines, structure conventions, and development practices for AI assistants.
+## Solution Architecture
 
-Context window management is critical in AI-assisted development. Regular use of the `/clear` command helps maintain optimal performance. A working pattern: use `/clear`, then read core project files (README.md, CLAUDE.md, TASKS.md, .env). Maintaining these files enables consistent architecture, clear development guidelines, and focused debugging.
+### System Overview
 
-## What's Included
+Noggin implements a multi-layered architecture as shown in the [architectural diagram](Documents/Images/noggin_architecture_final_version.png). A detailed [interaction narrative](Documents/patient_interaction_narrative.md) describes how the system components work together in a typical scenario.
 
-- **CLAUDE.md** - Comprehensive project instructions template for Claude Code
-- **claude-template.md** - Starter template for creating project-specific instructions
-- **settings.json** - Example configuration settings
-- **env.example** - Environment variable template
-- **2025-10-14 - UV Setup.md** - UV package manager setup guide
+1. **User Interface Layer**
+   - Native Mobile Applications (iOS/Android)
+   - Web Application (Progressive Web App)
+   - Conversational Interfaces (WhatsApp/SMS/Voice)
 
-## Getting Started
+2. **Application Layer**
+   - API Gateway (REST)
+   - AWS Lambda Functions
+   - EventBridge for event-driven processes
 
-1. Copy the relevant template files to your project
-2. Customize `CLAUDE.md` with your project-specific details
-3. Replace placeholder text (YOUR_APP, DATA_SOURCE_1, etc.) with your actual values
-4. Configure settings according to your development workflow
+3. **Intelligence Layer**
+   - AWS Bedrock AgentCore foundation
+   - Domain-specific foundation models
+   - STRANDS-based agent framework
 
-## Benefits
+4. **Data Layer**
+   - DynamoDB for patient data and symptom tracking
+   - S3 for media storage
+   - Secrets Manager for sensitive information
 
-- Consistent AI behavior across team members
-- Reduced repetitive instructions
-- Enforced development standards
-- Defined architectural patterns
-- Structured debugging workflows
+### Agentic Architecture
 
-## Memory Management
+Noggin employs a specialized multi-agent architecture based on STRANDS framework:
 
-### Core Principles
+#### Core Agents
 
-Context window size directly impacts AI assistant performance. Effective context management can improve performance by 39% ([Anthropic research](https://www.anthropic.com/news/context-management)).
+1. **Intake Agent**
+   - Model: Claude 3 Sonnet
+   - Purpose: Initial assessment and triage
+   - Tools: Validated mTBI assessment protocols
+   - Outputs: Severity score, risk classification
 
-### Essential Commands
+2. **Monitoring Agent**
+   - Model: Claude 3 Haiku
+   - Purpose: Continuous symptom tracking
+   - Tools: Temporal pattern recognition, anomaly detection
+   - Outputs: Recovery progress, symptom trends
 
-**`/clear`** - Reset context window between tasks. Use regularly to maintain performance.
+3. **Intervention Agent**
+   - Model: Fine-tuned Titan Text G1
+   - Purpose: Personalized care recommendations
+   - Tools: NHS guideline integration, intervention effectiveness tracking
+   - Outputs: Tailored recovery plans, exercise recommendations
 
-**`/context`** - Inspect token usage and optimize MCP tools.
+4. **Escalation Agent**
+   - Model: Claude 3 Sonnet
+   - Purpose: Clinical alert generation
+   - Tools: Threshold monitoring, urgency classification
+   - Outputs: Provider notifications, emergency alerts
 
-**`/compact`** - Compress current session to reduce token count (processing time: 1+ minutes).
+#### Agent Coordination
 
-**`/resume`** - Switch between previous sessions.
+- **Orchestrator Service**: Manages agent workflows and handoffs
+- **Context Manager**: Maintains conversation history and patient context
+- **Tool Repository**: Specialized clinical tools for assessment and intervention
 
-### File Organization
+### Voice Interface Implementation
 
-**Project Memory** (CLAUDE.md):
-- Project-specific guidelines loaded at session start
-- Keep minimal to reduce token consumption
-- Follow cascaded system approach ([Claude Code best practices](https://www.anthropic.com/engineering/claude-code-best-practices))
+Noggin implements a comprehensive voice interface through:
 
-**Ad-Hoc Documentation** (docs/):
-- Store occasional-use information separately
-- Reference via `@docs/filename.md` to avoid loading unnecessary content
-- Load context on-demand for complex analysis
+1. **Speech Recognition**
+   - AWS Transcribe (with Medical specialization)
+   - Real-time speech-to-text for patient interactions
+   - Support for multiple languages and accents
 
-### Context Engineering Patterns
+2. **Voice Synthesis**
+   - AWS Polly with NTTS (Neural Text-to-Speech)
+   - Emotionally appropriate voice responses
+   - Accessibility considerations for diverse user needs
 
-**Core Strategies**:
-1. **Writing** - Create persistent information stores
-2. **Selecting** - Load relevant information when needed
-3. **Compressing** - Minimize token usage
-4. **Isolating** - Structure information by concern
+3. **Conversation Management**
+   - Turn-taking protocol
+   - Interruption handling
+   - Context preservation across voice sessions
 
-**Implementation**:
-- Break tasks into discrete units; use `/clear` between completions
-- Delegate verification and investigation to subagents
-- Maintain examples folder for pattern reference
-- Document session context before closing
-- Import only relevant code sections
-- Preserve project hierarchy in references
+### Mobile and Cloud Integration
 
-### Advanced Features
+The system seamlessly integrates mobile capabilities with AWS cloud services:
 
-**Context Editing** - Automatically removes stale tool calls when approaching token limits. Reduces token consumption by 84% in extended sessions. [Details](https://www.anthropic.com/news/context-management)
+1. **Mobile Components**
+   - Cross-platform React Native application
+   - Offline symptom recording
+   - Push notification system for reminders
+   - Secure data synchronization
 
-**Memory Tool** - File-based storage for information outside the context window. Maintains knowledge bases and project state across sessions.
+2. **Cloud Infrastructure**
+   - Serverless architecture (Lambda + API Gateway)
+   - Event-driven processing via EventBridge
+   - HIPAA-compliant data storage with encryption
+   - Multi-region deployment for reliability
 
-**Context Awareness** - Claude Sonnet 4.5 and Haiku 4.5 track remaining context window throughout conversations.
+## Implementation Plan
 
-## AWS Integration
+### Phase 1: Foundation (Months 1-3)
+- Develop core AWS infrastructure using CloudFormation
+- Implement base agent framework using STRANDS
+- Create initial mobile application prototype
+- Set up basic voice interface capabilities
 
-### Tools
+### Phase 2: Intelligence Layer (Months 4-6)
+- Train and integrate domain-specific foundation models
+- Implement agent coordination system
+- Develop clinical dashboard for providers
+- Create comprehensive testing framework
 
-**[Amazon Q Developer](https://aws.amazon.com/q/developer/)** - AI coding assistant for AWS. Code acceptance rates: 37-60%. Language support: Python, Java, JavaScript, TypeScript, C#, Go, Rust, PHP, Ruby, Kotlin, C, C++, shell scripting, SQL, Scala, JSON, YAML, HCL.
+### Phase 3: Clinical Validation (Months 7-12)
+- Conduct multi-site testing with university athletes
+- Analyze engagement and adherence patterns
+- Refine triage sensitivity and decision-making
+- Prepare for regulatory submissions (MHRA/IRAS)
 
-**[AWS MCP Servers](https://aws.amazon.com/blogs/machine-learning/introducing-aws-mcp-servers-for-code-assistants-part-1/)** - Model Context Protocol servers for AWS development workflows.
+## Technical Specifications
 
-### Implementation Patterns
+### AWS Services
+- **Compute**: Lambda, ECS
+- **Storage**: S3, DynamoDB
+- **AI/ML**: Bedrock, Transcribe Medical, Polly
+- **Security**: IAM, KMS, Secrets Manager
+- **Networking**: API Gateway, CloudFront
 
-- **IaC Translation**: Automated translation between infrastructure frameworks. [Guide](https://aws.amazon.com/blogs/compute/infrastructure-as-code-translation-for-serverless-using-ai-code-assistants/)
-- **Security Scanning**: Vulnerability detection, credential exposure, log injection analysis
-- **CI/CD**: Test generation, contract validation, pre-production failure detection
-- **Compliance**: [FedRAMP and DoD CC SRG](https://aws.amazon.com/blogs/publicsector/building-an-ai-coding-assistant-on-aws-a-guide-for-federal-agencies/) implementation guidance
+### Foundation Models
+- **Primary LLM**: Claude 3 Sonnet (general interactions)
+- **Lightweight LLM**: Claude 3 Haiku (routine monitoring)
+- **Specialized Models**: Fine-tuned Titan models for specific clinical tasks
+- **Embedding Model**: Amazon Titan Embeddings (symptom pattern recognition)
 
-## Resources
+### Security and Compliance
+- End-to-end encryption for all data
+- HIPAA compliance architecture
+- Role-based access control
+- Comprehensive audit logging
+- Regular penetration testing
 
-### Documentation
+## Cost Optimization
 
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
-- [Context Windows Guide](https://docs.claude.com/en/docs/build-with-claude/context-windows)
-- [Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-- [AWS Amazon Q Developer](https://aws.amazon.com/q/developer/)
+Noggin implements several strategies to maintain low operational costs:
 
-### Thought Leaders
+1. **Serverless Architecture**
+   - Pay-per-use Lambda functions
+   - Auto-scaling based on demand
 
-**[IndyDevDan](https://www.youtube.com/@indydevdan)** - Agentic engineering and principled AI coding
-- [Principled AI Coding (PAIC)](https://agenticengineer.com/principled-ai-coding) - Comprehensive course on AI coding fundamentals
-- [Tactical Agentic Coding (TAC)](https://agenticengineer.com/tactical-agentic-coding) - Advanced course on agent orchestration and production deployment
-- Focuses on building living software with Claude Code, spec-based coding, and agentic workflows
-- [YouTube](https://www.youtube.com/@indydevdan) | [Website](https://indydevdan.com/) | [X/Twitter](https://x.com/indydevdan)
+2. **Model Selection Strategy**
+   - Smaller, specialized models for routine tasks
+   - Larger models reserved for complex interactions
+   - Caching for common responses
 
-**[Cole Medin](https://github.com/coleam00)** - Context engineering resources and implementation patterns
-- [Context Engineering Introduction](https://github.com/coleam00/context-engineering-intro)
-- Dynamous AI community - Context Engineering Hub
-- Product Requirements Prompts (PRPs) methodology
-- [LinkedIn](https://www.linkedin.com/in/cole-medin-727752184/) | [GitHub](https://github.com/coleam00)
+3. **Resource Tiering**
+   - Development/testing environments with lower-cost resources
+   - Production environment optimized for performance and reliability
 
-### Additional Reading
+## Expected Outcomes
 
-- [Practical Context Engineering](https://abvijaykumar.medium.com/practical-context-engineering-for-vibe-coding-with-claude-code-6aac4ee77f81)
-- [Memory Management Tips](https://www.geeky-gadgets.com/claude-code-memory-management-tips/)
-- [Context Engineering Guide](https://www.datacamp.com/blog/context-engineering) (DataCamp)
-- [AI Coding Context Management](https://prompt.16x.engineer/blog/ai-coding-context-management)
-- [Google Cloud AI Assistant Best Practices](https://cloud.google.com/blog/topics/developers-practitioners/five-best-practices-for-using-ai-coding-assistants)
+1. **Patient Benefits**
+   - Continuous engagement during recovery
+   - Personalized guidance and support
+   - Timely escalation when needed
 
-## Contributing
+2. **Clinical Benefits**
+   - Comprehensive symptom documentation
+   - Efficient resource allocation
+   - Data-driven treatment decisions
 
-Submit issues or pull requests to improve these templates.
+3. **Research Benefits**
+   - Rich longitudinal data for mTBI research
+   - Framework for LLM integration in clinical settings
+   - Validation of digital health interventions
+
+## Future Extensions
+
+1. **Expanded Clinical Domains**
+   - Adaptation for other neurological conditions
+   - Extension to chronic disease management
+
+2. **Enhanced Sensing**
+   - Integration with wearable devices
+   - Passive symptom monitoring
+
+3. **Advanced Analytics**
+   - Population-level insights
+   - Predictive recovery modeling
