@@ -9,6 +9,22 @@ Over one million people suffer an mTBI in the UK annually, yet most receive mini
 - Delayed interventions that could prevent long-term complications
 - Inefficient use of specialist resources
 
+## User Experience Mockups
+
+Interactive HTML mockups are available to demonstrate the Noggin user experience:
+
+### Patient Mobile App
+- [Patient Mobile App HTML Mockup](Documents/Images/patient_mobile_app_mockup.html)
+- Features symptom tracking, recovery progress visualization, and activity management
+
+### WhatsApp Conversation
+- [WhatsApp Conversation HTML Mockup](Documents/Images/whatsapp_conversation_mockup.html)
+- Demonstrates the conversational interface for symptom assessment and monitoring
+
+### Clinician Dashboard
+- [Clinician Dashboard HTML Mockup](Documents/Images/clinician_dashboard_mockup.html)
+- Provides clinical oversight with symptom trends, alerts, and patient management
+
 ## Solution Architecture
 
 ### System Overview
