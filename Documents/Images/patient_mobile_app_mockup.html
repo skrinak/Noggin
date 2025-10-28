@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noggin Patient Mobile App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Material Design v3 Colors */
+    :root {
+      --md-primary: #6750A4;
+      --md-primary-container: #EADDFF;
+      --md-on-primary: #FFFFFF;
+      --md-on-primary-container: #21005D;
+      --md-secondary: #625B71;
+      --md-secondary-container: #E8DEF8;
+      --md-on-secondary: #FFFFFF;
+      --md-on-secondary-container: #1D192B;
+      --md-tertiary: #7D5260;
+      --md-tertiary-container: #FFD8E4;
+      --md-surface: #FEF7FF;
+      --md-surface-variant: #E7E0EC;
+      --md-on-surface: #1C1B1F;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-error: #B3261E;
+      --md-success: #006E1C;
+      --md-warning: #CD6200;
+      --md-background: #FFFBFE;
+      
+      /* Elevation */
+      --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3);
+      --md-elevation-2: 0 1px 2px rgba(0,0,0,0.2), 0 2px 6px 2px rgba(0,0,0,0.15);
+      --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-container {
+      width: 375px;
+      height: 812px;
+      background-color: var(--md-background);
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--md-elevation-3);
+      border: 10px solid #121212;
+    }
+
+    .status-bar {
+      height: 44px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      background-color: var(--md-background);
+    }
+
+    .status-bar .time {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .status-bar .icons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .app-bar {
+      height: 64px;
+      background-color: var(--md-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      color: var(--md-on-primary);
+    }
+
+    .app-bar h1 {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .app-content {
+      padding: 16px;
+      height: calc(100% - 108px); /* Status bar + app bar */
+      overflow-y: auto;
+    }
+
+    .symptom-tracker {
+      background-color: var(--md-surface);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--md-elevation-1);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--md-on-surface);
+      margin-bottom: 16px;
+    }
+
+    .progress-container {
+      margin-bottom: 24px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .progress-label span {
+      font-size: 14px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .progress-bar {
+      height: 8px;
+      width: 100%;
+      background-color: var(--md-surface-variant);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--md-primary);
+      width: 65%;
+    }
+
+    .symptom-card {
+      background-color: var(--md-primary-container);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .symptom-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .symptom-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--md-on-primary-container);
+      margin-bottom: 4px;
+    }
+
+    .symptom-trend {
+      font-size: 14px;
+      color: var(--md-success);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .symptom-trend.improving {
+      color: var(--md-success);
+    }
+
+    .symptom-trend.worsening {
+      color: var(--md-error);
+    }
+
+    .symptom-trend.stable {
+      color: var(--md-on-surface-variant);
+    }
+
+    .symptom-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--md-on-primary-container);
+    }
+
+    .card {
+      background-color: var(--md-surface);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--md-elevation-1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--md-on-surface);
+    }
+
+    .card-action {
+      font-size: 14px;
+      color: var(--md-primary);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--md-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--md-on-primary-container);
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--md-on-surface);
+      margin-bottom: 4px;
+    }
+
+    .activity-meta {
+      font-size: 14px;
+      color: var(--md-on-surface-variant);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .appointment-card {
+      background-color: var(--md-tertiary-container);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .appointment-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .appointment-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--md-on-tertiary-container);
+    }
+
+    .appointment-date {
+      font-size: 14px;
+      color: var(--md-on-tertiary-container);
+      opacity: 0.8;
+    }
+
+    .appointment-doctor {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .doctor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--md-surface);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--md-on-surface);
+      font-weight: 500;
+    }
+
+    .doctor-info {
+      flex: 1;
+    }
+
+    .doctor-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--md-on-tertiary-container);
+      margin-bottom: 4px;
+    }
+
+    .doctor-specialty {
+      font-size: 14px;
+      color: var(--md-on-tertiary-container);
+      opacity: 0.8;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .button {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .button-primary {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+
+    .button-secondary {
+      background-color: transparent;
+      color: var(--md-primary);
+      border: 1px solid var(--md-outline);
+    }
+
+    .bottom-navigation {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background-color: var(--md-surface);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+      padding-bottom: 16px; /* For iPhone home indicator */
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--md-on-surface-variant);
+    }
+
+    .nav-item.active {
+      color: var(--md-primary);
+    }
+
+    .nav-item i {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .nav-label {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-container">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <div class="icons">
+        <span>📶</span>
+        <span>📡</span>
+        <span>🔋</span>
+      </div>
+    </div>
+    
+    <div class="app-bar">
+      <h1>Noggin</h1>
+      <span class="material-icons">notifications</span>
+    </div>
+    
+    <div class="app-content">
+      <div class="symptom-tracker">
+        <h2 class="section-title">Recovery Progress</h2>
+        
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Day 5 of 14</span>
+            <span>65% Complete</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+        
+        <h3 class="section-title">Today's Symptoms</h3>
+        
+        <div class="symptom-card">
+          <div class="symptom-info">
+            <span class="symptom-name">Headache</span>
+            <span class="symptom-trend improving">
+              <span class="material-icons" style="font-size: 16px;">trending_down</span>
+              Improving
+            </span>
+          </div>
+          <div class="symptom-value">3/10</div>
+        </div>
+        
+        <div class="symptom-card">
+          <div class="symptom-info">
+            <span class="symptom-name">Dizziness</span>
+            <span class="symptom-trend stable">
+              <span class="material-icons" style="font-size: 16px;">trending_flat</span>
+              Stable
+            </span>
+          </div>
+          <div class="symptom-value">2/10</div>
+        </div>
+        
+        <div class="symptom-card">
+          <div class="symptom-info">
+            <span class="symptom-name">Fatigue</span>
+            <span class="symptom-trend improving">
+              <span class="material-icons" style="font-size: 16px;">trending_down</span>
+              Improving
+            </span>
+          </div>
+          <div class="symptom-value">4/10</div>
+        </div>
+      </div>
+      
+      <div class="appointment-card">
+        <div class="appointment-header">
+          <span class="appointment-title">Upcoming Appointment</span>
+          <span class="appointment-date">Tomorrow, 10:00 AM</span>
+        </div>
+        
+        <div class="appointment-doctor">
+          <div class="doctor-avatar">DJ</div>
+          <div class="doctor-info">
+            <div class="doctor-name">Dr. Johnson</div>
+            <div class="doctor-specialty">Neurology</div>
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <div class="button button-secondary">Reschedule</div>
+          <div class="button button-primary">Join Call</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Today's Activities</span>
+          <a href="#" class="card-action">View All</a>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-icon">
+            <span class="material-icons">self_improvement</span>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">Relaxation Exercise</div>
+            <div class="activity-meta">
+              <span>5 minutes</span>
+              <span>Due today</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-icon">
+            <span class="material-icons">psychology</span>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">Cognitive Assessment</div>
+            <div class="activity-meta">
+              <span>10 minutes</span>
+              <span>Due today</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bottom-navigation">
+      <div class="nav-item active">
+        <span class="material-icons">home</span>
+        <span class="nav-label">Home</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">analytics</span>
+        <span class="nav-label">Progress</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">chat</span>
+        <span class="nav-label">Chat</span>
+      </div>
+      <div class="nav-item">
+        <span class="material-icons">person</span>
+        <span class="nav-label">Profile</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

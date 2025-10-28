@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noggin WhatsApp/SMS Conversation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Material Design v3 Colors */
+    :root {
+      --md-primary: #128C7E; /* WhatsApp green */
+      --md-primary-container: #DCF8C6; /* Light green for user messages */
+      --md-on-primary: #FFFFFF;
+      --md-on-primary-container: #056052;
+      --md-secondary: #6750A4;
+      --md-secondary-container: #E8DEF8;
+      --md-on-secondary: #FFFFFF;
+      --md-on-secondary-container: #1D192B;
+      --md-tertiary: #7D5260;
+      --md-tertiary-container: #FFD8E4;
+      --md-surface: #FEF7FF;
+      --md-surface-variant: #E7E0EC;
+      --md-on-surface: #1C1B1F;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-error: #B3261E;
+      --md-success: #006E1C;
+      --md-warning: #CD6200;
+      --md-background: #FFFBFE;
+      --whatsapp-bg: #E5DDD5;
+      --whatsapp-chat-bg: #ECE5DD;
+      --bot-message-bg: #FFFFFF;
+      
+      /* Elevation */
+      --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3);
+      --md-elevation-2: 0 1px 2px rgba(0,0,0,0.2), 0 2px 6px 2px rgba(0,0,0,0.15);
+      --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-container {
+      width: 375px;
+      height: 812px;
+      background-color: var(--whatsapp-bg);
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--md-elevation-3);
+      border: 10px solid #121212;
+    }
+
+    .status-bar {
+      height: 44px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+
+    .status-bar .time {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .status-bar .icons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .chat-header {
+      height: 60px;
+      background-color: var(--md-primary);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      color: var(--md-on-primary);
+    }
+
+    .back-button {
+      margin-right: 16px;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--md-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+      color: var(--md-on-primary-container);
+      margin-right: 12px;
+    }
+
+    .chat-info {
+      flex: 1;
+    }
+
+    .chat-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .chat-status {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .chat-content {
+      padding: 16px;
+      height: calc(100% - 164px); /* Status bar + chat header + input bar */
+      overflow-y: auto;
+      background-color: var(--whatsapp-chat-bg);
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKoSURBVEiJtZZPbBNXFMZ/b8YBkowBN7USYtNFJKSqDaQgRRULcRgRkNi5KEGwQ4UQC9RWlfgzSqqyKBJSBSgSUg9VEI6QdAcVatWgCrGgCOGwCKKiQrTZmB0kNomJ45iM3+ti7KyTODGuyn98mvfm+33vzfd0n5jZfGmii2Z0CAbE0d0dXvRqzZf7xEYGDWzUYRNGM4EF5H5rL9r7UO6HcS+Ljb7Hk5dfhOHMi9k73X09Z7rf9Mdu7B/cb3fZiIxc+G1uVdBM7UUCA/uhvwvmb2epvg+ygMvH7+9xbE9fMbr7ewfM9FCx7RcBKH0NXjsJlb+JWkcRNwQ3wBrrmZJ6YL8VVb8AbPtcV1XE5HixlztVQuWN44hbg8obJxD3Ucme9d8W4vqhZHdi6Nvyehy3Jtt8uXbra/ikDTgJQOlWZs9+g2rdCYtLEpVDqivsgpKRv7wKFleYvfB9AZ5qsW/ZQWhloy6cQfZ+Wznb3gDQvleCJsH9X+eyM/7dSxpk9Jt44k+7dPmHEvlYKwBmdZDdCkCySTaRwdgZu3j5hwMrg1aNnpFbHwXO5/u6b15LX+00rXkNgNRCHCtzG0c6tFBVoLDm5q/yxnGcui8xqwNkF5ewrKH6jEsNXjI7vC5ozrqPEKsFoHm+O0/FnKNh/B0cdwok+8GF5Xnm5+aIRU6tCKrN0LfLwdUXP0o6WrgqmJ9GiyMlA8mLrW4NuYMouB8nnljI+aXD5jK4tkBl3SkQWAc05e2zANUb4sRiD9OXWvMkGsqVHKr2LZA1D0HiL7zOS0UAvjOtJrwOPu8wUDvQjlLxGJjFcCLjsXDoI2Dp+AD4b7phL/ePychnwMtrlW8JGv8L89X/AvxMODS0FsfDpUtFv/L/AESMmkK0cYz0AAAAAElFTkSuQmCC");
+      background-repeat: repeat;
+    }
+
+    .date-divider {
+      text-align: center;
+      margin: 16px 0;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      background-color: rgba(225, 245, 254, 0.9);
+      border-radius: 8px;
+      display: inline-block;
+      padding: 4px 12px;
+      margin-left: auto;
+      margin-right: auto;
+      width: auto;
+      display: table;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-content {
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .message-time {
+      font-size: 10px;
+      color: var(--md-on-surface-variant);
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .user-message {
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      margin-left: auto;
+      border-radius: 8px 0 8px 8px;
+    }
+
+    .user-message::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -10px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid var(--md-primary-container);
+      border-top: 10px solid transparent;
+    }
+
+    .bot-message {
+      background-color: var(--bot-message-bg);
+      color: var(--md-on-surface);
+      margin-right: auto;
+      border-radius: 0 8px 8px 8px;
+      box-shadow: var(--md-elevation-1);
+    }
+
+    .bot-message::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-right: 10px solid var(--bot-message-bg);
+      border-top: 10px solid transparent;
+    }
+
+    .input-bar {
+      height: 60px;
+      background-color: var(--md-surface);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .input-field {
+      flex: 1;
+      background-color: white;
+      border-radius: 24px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      margin: 0 8px;
+    }
+
+    .input-text {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      padding: 4px 0;
+    }
+
+    .action-button {
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--md-on-surface-variant);
+    }
+
+    .send-button {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+
+    .choice-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .choice-button {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+      padding: 8px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .symptom-rating {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+      justify-content: center;
+    }
+
+    .rating-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--md-surface-variant);
+      color: var(--md-on-surface-variant);
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .rating-button.selected {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+
+    .system-message {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--md-on-surface-variant);
+      text-align: center;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      margin: 8px auto;
+      max-width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-container">
+    <div class="status-bar">
+      <span class="time">10:24</span>
+      <div class="icons">
+        <span>📶</span>
+        <span>📡</span>
+        <span>🔋</span>
+      </div>
+    </div>
+    
+    <div class="chat-header">
+      <div class="back-button">
+        <span class="material-icons">arrow_back</span>
+      </div>
+      <div class="chat-avatar">N</div>
+      <div class="chat-info">
+        <div class="chat-name">Noggin Concussion Guide</div>
+        <div class="chat-status">Online</div>
+      </div>
+      <div class="chat-actions">
+        <span class="material-icons">videocam</span>
+        <span class="material-icons">call</span>
+        <span class="material-icons">more_vert</span>
+      </div>
+    </div>
+    
+    <div class="chat-content">
+      <div class="date-divider">TODAY</div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          Hi Sam! This is Noggin, your concussion recovery guide. How are you feeling today?
+        </div>
+        <div class="message-time">10:15 AM</div>
+      </div>
+      
+      <div class="message user-message">
+        <div class="message-content">
+          Hi, I'm feeling a bit better today. Still have some headache though.
+        </div>
+        <div class="message-time">10:16 AM</div>
+      </div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          I'm glad to hear you're feeling somewhat better. Let's track your headache symptom. On a scale of 0-10 (with 10 being the worst), how would you rate your headache today?
+        </div>
+        <div class="symptom-rating">
+          <div class="rating-button">0</div>
+          <div class="rating-button">1</div>
+          <div class="rating-button">2</div>
+          <div class="rating-button selected">3</div>
+          <div class="rating-button">4</div>
+          <div class="rating-button">5</div>
+          <div class="rating-button">6</div>
+          <div class="rating-button">7</div>
+          <div class="rating-button">8</div>
+          <div class="rating-button">9</div>
+          <div class="rating-button">10</div>
+        </div>
+        <div class="message-time">10:17 AM</div>
+      </div>
+      
+      <div class="message user-message">
+        <div class="message-content">
+          3
+        </div>
+        <div class="message-time">10:17 AM</div>
+      </div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          Thanks for sharing. A 3/10 shows improvement from yesterday's 5/10. That's good progress! How about dizziness? Any changes since yesterday?
+        </div>
+        <div class="message-time">10:18 AM</div>
+      </div>
+      
+      <div class="message user-message">
+        <div class="message-content">
+          Dizziness is about the same. Maybe slightly better when I get up.
+        </div>
+        <div class="message-time">10:19 AM</div>
+      </div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          Let's rate your dizziness on the same 0-10 scale. How would you rate it today?
+        </div>
+        <div class="symptom-rating">
+          <div class="rating-button">0</div>
+          <div class="rating-button">1</div>
+          <div class="rating-button selected">2</div>
+          <div class="rating-button">3</div>
+          <div class="rating-button">4</div>
+          <div class="rating-button">5</div>
+          <div class="rating-button">6</div>
+          <div class="rating-button">7</div>
+          <div class="rating-button">8</div>
+          <div class="rating-button">9</div>
+          <div class="rating-button">10</div>
+        </div>
+        <div class="message-time">10:20 AM</div>
+      </div>
+      
+      <div class="message user-message">
+        <div class="message-content">
+          2
+        </div>
+        <div class="message-time">10:20 AM</div>
+      </div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          Great! That's the same as yesterday. Now, let's talk about fatigue. How is your energy level today?
+        </div>
+        <div class="message-time">10:21 AM</div>
+      </div>
+      
+      <div class="message user-message">
+        <div class="message-content">
+          I'm still pretty tired. Didn't sleep well last night.
+        </div>
+        <div class="message-time">10:22 AM</div>
+      </div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          I'm sorry to hear about your sleep difficulties. Let's rate your fatigue level on our 0-10 scale.
+        </div>
+        <div class="symptom-rating">
+          <div class="rating-button">0</div>
+          <div class="rating-button">1</div>
+          <div class="rating-button">2</div>
+          <div class="rating-button">3</div>
+          <div class="rating-button selected">4</div>
+          <div class="rating-button">5</div>
+          <div class="rating-button">6</div>
+          <div class="rating-button">7</div>
+          <div class="rating-button">8</div>
+          <div class="rating-button">9</div>
+          <div class="rating-button">10</div>
+        </div>
+        <div class="message-time">10:22 AM</div>
+      </div>
+      
+      <div class="system-message">Sam is rating their symptoms...</div>
+      
+      <div class="message bot-message">
+        <div class="message-content">
+          Thank you for the updates. Based on your symptoms today:
+
+• Your headache has improved from 5/10 to 3/10
+• Dizziness remains stable at 2/10
+• Fatigue is at 4/10, slightly improved from 5/10
+
+Your recovery is progressing well! Remember your appointment with Dr. Johnson tomorrow at 10:00 AM.
+
+Would you like me to suggest some relaxation techniques that might help with your sleep tonight?
+        </div>
+        <div class="choice-buttons">
+          <div class="choice-button">Yes, please</div>
+          <div class="choice-button">No thanks</div>
+          <div class="choice-button">Reschedule appointment</div>
+        </div>
+        <div class="message-time">10:24 AM</div>
+      </div>
+    </div>
+    
+    <div class="input-bar">
+      <div class="action-button">
+        <span class="material-icons">emoji_emotions</span>
+      </div>
+      <div class="input-field">
+        <input type="text" class="input-text" placeholder="Type a message">
+        <span class="material-icons">attach_file</span>
+        <span class="material-icons">camera_alt</span>
+      </div>
+      <div class="action-button send-button">
+        <span class="material-icons">send</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

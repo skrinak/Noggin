@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noggin Clinician Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Material Design v3 Colors */
+    :root {
+      --md-primary: #6750A4;
+      --md-primary-container: #EADDFF;
+      --md-on-primary: #FFFFFF;
+      --md-on-primary-container: #21005D;
+      --md-secondary: #625B71;
+      --md-secondary-container: #E8DEF8;
+      --md-on-secondary: #FFFFFF;
+      --md-on-secondary-container: #1D192B;
+      --md-tertiary: #7D5260;
+      --md-tertiary-container: #FFD8E4;
+      --md-surface: #FEF7FF;
+      --md-surface-variant: #E7E0EC;
+      --md-on-surface: #1C1B1F;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-error: #B3261E;
+      --md-success: #006E1C;
+      --md-warning: #CD6200;
+      --md-background: #FFFBFE;
+      
+      /* Elevation */
+      --md-elevation-1: 0 1px 2px rgba(0,0,0,0.3);
+      --md-elevation-2: 0 1px 2px rgba(0,0,0,0.2), 0 2px 6px 2px rgba(0,0,0,0.15);
+      --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: var(--md-background);
+      color: var(--md-on-surface);
+      min-height: 100vh;
+    }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: var(--md-surface);
+      color: var(--md-on-surface);
+      box-shadow: var(--md-elevation-1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--md-outline);
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background-color: var(--md-primary);
+      border-radius: 8px;
+      color: var(--md-on-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .app-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 16px 0;
+      flex: 1;
+    }
+
+    .nav-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      color: var(--md-on-surface-variant);
+      font-size: 14px;
+    }
+
+    .nav-item:hover {
+      background-color: var(--md-surface-variant);
+    }
+
+    .nav-item.active {
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      font-weight: 500;
+    }
+
+    .nav-item i {
+      font-size: 20px;
+    }
+
+    .user-profile {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid var(--md-outline);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 240px;
+      padding: 16px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--md-surface);
+      padding: 8px 16px;
+      border-radius: 24px;
+      box-shadow: var(--md-elevation-1);
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      width: 240px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .filter-chip {
+      padding: 8px 16px;
+      background-color: var(--md-surface);
+      border-radius: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--md-elevation-1);
+      cursor: pointer;
+    }
+
+    .filter-chip.active {
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background-color: var(--md-surface);
+      border-radius: 16px;
+      box-shadow: var(--md-elevation-1);
+      padding: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .patient-overview {
+      grid-column: span 3;
+    }
+
+    .patient-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .symptom-trends {
+      grid-column: span 9;
+      display: flex;
+      flex-direction: column;
+      height: 300px;
+    }
+
+    .chart {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      padding-top: 24px;
+      padding-bottom: 24px;
+      margin-top: 16px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 4px;
+    }
+
+    .chart-axis {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 0;
+      width: 24px;
+      text-align: right;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .chart-dates {
+      position: absolute;
+      left: 24px;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: space-around;
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .chart-columns {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 100%;
+    }
+
+    .chart-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      width: 60px;
+    }
+
+    .chart-column {
+      width: 12px;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .column-headache {
+      background-color: #B3261E;
+    }
+
+    .column-dizziness {
+      background-color: #006E1C;
+    }
+
+    .column-fatigue {
+      background-color: #6750A4;
+    }
+
+    .notifications {
+      grid-column: span 3;
+    }
+
+    .notification-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--md-surface-variant);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .notification-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .notification-text {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .risk-score {
+      background-color: var(--md-tertiary-container);
+      color: var(--md-on-tertiary-container);
+    }
+
+    .patient-actions {
+      grid-column: span 9;
+    }
+
+    .button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button-primary {
+      background-color: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+
+    .button-outline {
+      border: 1px solid var(--md-outline);
+      color: var(--md-primary);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .upcoming-appointments {
+      grid-column: span 6;
+    }
+
+    .appointment-list {
+      margin-top: 16px;
+    }
+
+    .appointment-item {
+      display: flex;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--md-surface-variant);
+      align-items: center;
+    }
+
+    .appointment-time {
+      width: 80px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .appointment-patient {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .patient-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .patient-info {
+      flex: 1;
+    }
+
+    .patient-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .patient-condition {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .appointment-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .status-confirmed {
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+    }
+
+    .status-completed {
+      background-color: var(--md-surface-variant);
+      color: var(--md-on-surface-variant);
+    }
+
+    .status-alert {
+      background-color: var(--md-error);
+      color: white;
+    }
+
+    .recent-activity {
+      grid-column: span 6;
+    }
+
+    .activity-list {
+      margin-top: 16px;
+    }
+
+    .activity-item {
+      display: flex;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--md-surface-variant);
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .activity-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      background-color: var(--md-secondary-container);
+      color: var(--md-on-secondary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .activity-details {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .activity-time {
+      font-size: 12px;
+      color: var(--md-on-surface-variant);
+      text-align: right;
+    }
+
+    .patient-info-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .patient-avatar-large {
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      background-color: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .patient-header-info {
+      flex: 1;
+    }
+
+    .patient-name-large {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .patient-details {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      color: var(--md-on-surface-variant);
+    }
+
+    .info-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">N</div>
+        <div class="app-title">Noggin</div>
+      </div>
+      
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i class="material-icons">dashboard</i>
+          <span>Dashboard</span>
+        </li>
+        <li class="nav-item active">
+          <i class="material-icons">person</i>
+          <span>Patients</span>
+        </li>
+        <li class="nav-item">
+          <i class="material-icons">calendar_today</i>
+          <span>Appointments</span>
+        </li>
+        <li class="nav-item">
+          <i class="material-icons">analytics</i>
+          <span>Analytics</span>
+        </li>
+        <li class="nav-item">
+          <i class="material-icons">message</i>
+          <span>Messages</span>
+        </li>
+        <li class="nav-item">
+          <i class="material-icons">settings</i>
+          <span>Settings</span>
+        </li>
+      </ul>
+      
+      <div class="user-profile">
+        <div class="user-avatar">DJ</div>
+        <div class="user-info">
+          <div class="user-name">Dr. Johnson</div>
+          <div class="user-role">Neurologist</div>
+        </div>
+        <i class="material-icons">more_vert</i>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <div class="top-bar">
+        <h1 class="page-title">Patient View</h1>
+        <div class="search-bar">
+          <i class="material-icons">search</i>
+          <input type="text" class="search-input" placeholder="Search patients...">
+        </div>
+      </div>
+      
+      <div class="patient-info-header">
+        <div class="patient-avatar-large">S</div>
+        <div class="patient-header-info">
+          <div class="patient-name-large">Sam Johnson</div>
+          <div class="patient-details">
+            <div class="info-badge">
+              <i class="material-icons" style="font-size: 16px;">calendar_today</i>
+              <span>20 years old</span>
+            </div>
+            <div class="info-badge">
+              <i class="material-icons" style="font-size: 16px;">sports_rugby</i>
+              <span>Rugby Player</span>
+            </div>
+            <div class="info-badge">
+              <i class="material-icons" style="font-size: 16px;">healing</i>
+              <span>mTBI - Day 5</span>
+            </div>
+          </div>
+        </div>
+        <div class="button button-primary">
+          <i class="material-icons">call</i>
+          <span>Contact Patient</span>
+        </div>
+      </div>
+      
+      <div class="filters">
+        <div class="filter-chip active">
+          <span>All Data</span>
+        </div>
+        <div class="filter-chip">
+          <span>Symptoms</span>
+        </div>
+        <div class="filter-chip">
+          <span>Activities</span>
+        </div>
+        <div class="filter-chip">
+          <span>Assessments</span>
+        </div>
+        <div class="filter-chip">
+          <i class="material-icons" style="font-size: 16px;">date_range</i>
+          <span>Last 7 Days</span>
+        </div>
+      </div>
+      
+      <div class="dashboard-grid">
+        <div class="card patient-overview">
+          <div class="card-header">
+            <div class="card-title">Patient Overview</div>
+            <div class="card-actions">
+              <i class="material-icons">more_vert</i>
+            </div>
+          </div>
+          
+          <div class="patient-stats">
+            <div class="stat-item">
+              <div class="stat-value">5</div>
+              <div class="stat-label">Days Since Injury</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">65%</div>
+              <div class="stat-label">Recovery</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value risk-score" style="font-size: 16px; padding: 4px 8px; border-radius: 16px;">Low Risk</div>
+              <div class="stat-label">Risk Level</div>
+            </div>
+          </div>
+          
+          <div class="notification-item">
+            <div class="notification-icon">
+              <i class="material-icons">trending_down</i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Improving Trends</div>
+              <div class="notification-text">Headache and fatigue symptoms are showing improvement over last 48 hours</div>
+            </div>
+          </div>
+          
+          <div class="notification-item">
+            <div class="notification-icon">
+              <i class="material-icons">event</i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Upcoming Appointment</div>
+              <div class="notification-text">Follow-up scheduled for tomorrow at 10:00 AM</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card symptom-trends">
+          <div class="card-header">
+            <div class="card-title">Symptom Trends</div>
+            <div class="card-actions">
+              <i class="material-icons">tune</i>
+              <i class="material-icons">more_vert</i>
+            </div>
+          </div>
+          
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-color column-headache"></div>
+              <span>Headache</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color column-dizziness"></div>
+              <span>Dizziness</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color column-fatigue"></div>
+              <span>Fatigue</span>
+            </div>
+          </div>
+          
+          <div class="chart">
+            <div class="chart-axis">
+              <div>10</div>
+              <div>8</div>
+              <div>6</div>
+              <div>4</div>
+              <div>2</div>
+              <div>0</div>
+            </div>
+            
+            <div class="chart-columns">
+              <div class="chart-day">
+                <div class="chart-column column-headache" style="height: 70%;"></div>
+                <div class="chart-column column-dizziness" style="height: 40%;"></div>
+                <div class="chart-column column-fatigue" style="height: 80%;"></div>
+              </div>
+              <div class="chart-day">
+                <div class="chart-column column-headache" style="height: 60%;"></div>
+                <div class="chart-column column-dizziness" style="height: 30%;"></div>
+                <div class="chart-column column-fatigue" style="height: 70%;"></div>
+              </div>
+              <div class="chart-day">
+                <div class="chart-column column-headache" style="height: 60%;"></div>
+                <div class="chart-column column-dizziness" style="height: 30%;"></div>
+                <div class="chart-column column-fatigue" style="height: 60%;"></div>
+              </div>
+              <div class="chart-day">
+                <div class="chart-column column-headache" style="height: 50%;"></div>
+                <div class="chart-column column-dizziness" style="height: 20%;"></div>
+                <div class="chart-column column-fatigue" style="height: 50%;"></div>
+              </div>
+              <div class="chart-day">
+                <div class="chart-column column-headache" style="height: 30%;"></div>
+                <div class="chart-column column-dizziness" style="height: 20%;"></div>
+                <div class="chart-column column-fatigue" style="height: 40%;"></div>
+              </div>
+            </div>
+            
+            <div class="chart-dates">
+              <div>Day 1</div>
+              <div>Day 2</div>
+              <div>Day 3</div>
+              <div>Day 4</div>
+              <div>Day 5</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card notifications">
+          <div class="card-header">
+            <div class="card-title">System Alerts</div>
+            <div class="card-actions">
+              <i class="material-icons">more_vert</i>
+            </div>
+          </div>
+          
+          <div class="notification-item">
+            <div class="notification-icon" style="background-color: var(--md-error); color: white;">
+              <i class="material-icons">priority_high</i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Sleep Quality Concern</div>
+              <div class="notification-text">Patient reported poor sleep quality for 3 consecutive nights</div>
+            </div>
+            <div class="notification-time">2h ago</div>
+          </div>
+          
+          <div class="notification-item">
+            <div class="notification-icon" style="background-color: var(--md-warning); color: white;">
+              <i class="material-icons">warning</i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Symptom Duration</div>
+              <div class="notification-text">Dizziness has persisted for 5 days without improvement</div>
+            </div>
+            <div class="notification-time">1d ago</div>
+          </div>
+          
+          <div class="notification-item">
+            <div class="notification-icon" style="background-color: var(--md-success); color: white;">
+              <i class="material-icons">check_circle</i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">Assessment Completed</div>
+              <div class="notification-text">Patient completed daily symptom assessment on time</div>
+            </div>
+            <div class="notification-time">Today</div>
+          </div>
+        </div>
+        
+        <div class="card patient-actions">
+          <div class="card-header">
+            <div class="card-title">Clinical Notes & AI Summary</div>
+            <div class="card-actions">
+              <i class="material-icons">more_vert</i>
+            </div>
+          </div>
+          
+          <p style="margin-bottom: 16px; font-size: 14px; line-height: 1.5;">
+            Patient shows improving symptoms over the past 5 days with headache intensity decreasing from 7/10 to 3/10. Dizziness remains stable at 2/10 without worsening. Fatigue has improved slightly from 5/10 to 4/10. Sleep quality is a notable concern with patient reporting difficulty falling asleep for the past 3 nights.
+          </p>
+          
+          <p style="margin-bottom: 16px; font-size: 14px; line-height: 1.5;">
+            <strong>AI Assessment:</strong> Recovery trajectory aligns with expected patterns for mild concussion in athletic young adults. Overall risk assessment is low. Recommend addressing sleep concerns with relaxation techniques and possibly short-term sleep aid if persistent.
+          </p>
+          
+          <div class="button-group">
+            <div class="button button-primary">
+              <i class="material-icons">edit</i>
+              <span>Add Clinical Note</span>
+            </div>
+            <div class="button button-outline">
+              <i class="material-icons">description</i>
+              <span>Generate Report</span>
+            </div>
+            <div class="button button-outline">
+              <i class="material-icons">share</i>
+              <span>Share with Team</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card upcoming-appointments">
+          <div class="card-header">
+            <div class="card-title">Upcoming Appointments</div>
+            <div class="card-actions">
+              <span style="font-size: 14px; color: var(--md-primary); cursor: pointer;">+ Add New</span>
+            </div>
+          </div>
+          
+          <div class="appointment-list">
+            <div class="appointment-item">
+              <div class="appointment-time">
+                <div>10:00 AM</div>
+                <div style="font-size: 12px; color: var(--md-on-surface-variant);">Tomorrow</div>
+              </div>
+              <div class="appointment-patient">
+                <div class="patient-avatar">S</div>
+                <div class="patient-info">
+                  <div class="patient-name">Sam Johnson</div>
+                  <div class="patient-condition">mTBI Follow-up</div>
+                </div>
+              </div>
+              <div class="appointment-status status-confirmed">Confirmed</div>
+            </div>
+            
+            <div class="appointment-item">
+              <div class="appointment-time">
+                <div>11:30 AM</div>
+                <div style="font-size: 12px; color: var(--md-on-surface-variant);">Tomorrow</div>
+              </div>
+              <div class="appointment-patient">
+                <div class="patient-avatar" style="background-color: #E8DEF8; color: #1D192B;">M</div>
+                <div class="patient-info">
+                  <div class="patient-name">Michael Turner</div>
+                  <div class="patient-condition">Post-Concussion Syndrome</div>
+                </div>
+              </div>
+              <div class="appointment-status status-confirmed">Confirmed</div>
+            </div>
+            
+            <div class="appointment-item">
+              <div class="appointment-time">
+                <div>2:00 PM</div>
+                <div style="font-size: 12px; color: var(--md-on-surface-variant);">Tomorrow</div>
+              </div>
+              <div class="appointment-patient">
+                <div class="patient-avatar" style="background-color: #FFD8E4; color: #31111D;">A</div>
+                <div class="patient-info">
+                  <div class="patient-name">Alex Smith</div>
+                  <div class="patient-condition">Initial Assessment</div>
+                </div>
+              </div>
+              <div class="appointment-status status-confirmed">Confirmed</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card recent-activity">
+          <div class="card-header">
+            <div class="card-title">Patient Activity Log</div>
+            <div class="card-actions">
+              <i class="material-icons">more_vert</i>
+            </div>
+          </div>
+          
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="material-icons" style="font-size: 16px;">chat</i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Symptom Assessment Completed</div>
+                <div class="activity-details">Headache: 3/10, Dizziness: 2/10, Fatigue: 4/10</div>
+              </div>
+              <div class="activity-time">10:24 AM</div>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="material-icons" style="font-size: 16px;">fitness_center</i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Activity Completed</div>
+                <div class="activity-details">5-minute relaxation exercise</div>
+              </div>
+              <div class="activity-time">Yesterday</div>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="material-icons" style="font-size: 16px;">psychology</i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Cognitive Assessment</div>
+                <div class="activity-details">Memory test score: 92% (improved from 85%)</div>
+              </div>
+              <div class="activity-time">2 days ago</div>
+            </div>
+            
+            <div class="activity-item">
+              <div class="activity-icon">
+                <i class="material-icons" style="font-size: 16px;">chat</i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Symptom Assessment Completed</div>
+                <div class="activity-details">Headache: 5/10, Dizziness: 2/10, Fatigue: 5/10</div>
+              </div>
+              <div class="activity-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
